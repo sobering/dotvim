@@ -80,9 +80,8 @@ set tm=500
 " Add a bit extra margin to the left
 set foldcolumn=1
 
-colorscheme desert
 set background=dark
-set t_Co=256
+colorscheme desert
 
 " Turn backup off, since most stuff is in SVN, git et.c anyway...
 set nobackup
@@ -155,3 +154,11 @@ function! HasPaste()
     en
     return ''
 endfunction
+
+" GUI settings
+if has("gui_macvim")
+  set noantialias
+  set guifont=TerminusTTF:h16
+  set t_Co=256
+  colorscheme base16-paraiso
+endif
