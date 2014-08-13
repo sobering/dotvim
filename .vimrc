@@ -160,5 +160,4 @@ if has("gui_macvim")
   set noantialias
   set guifont=TerminusTTF:h16
   set t_Co=256
-  colorscheme base16-paraiso
 endif
