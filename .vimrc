@@ -3,6 +3,10 @@
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 
+" Fixes issue with Vim Ruby. This is most likely caused by my use of Fish
+" Shell
+let g:ruby_path = $ruby_bin
+
 " Use Vim settings, rather than Vi settings (much better!).
 " This must be first, because it changes other options as a side effect.
 set nocompatible
@@ -146,6 +150,9 @@ map <leader>pp :setlocal paste!<cr>
 
 " Format the status line
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
+
+" Ignore certain files in tab-completion
+set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules
 
 " Returns true if paste mode is enabled
 function! HasPaste()
