@@ -10,10 +10,14 @@ This is my repo for my Vim config. There are many like it, but this one is mine.
 
 		ln -s ~/.vim/.vimrc ~/.vimrc
 		
-3. Initialize and update the git submodules:
+3. Initialize and update the Vundle submodule:
 
  		cd ~/.vim
 		git submodule init
 		git submodule update
+
+4. Install your plugins:
+
+    vim +BundleInstall! +BundleClean +qall
   		
-4. Be cool :metal:
+5. Be cool :metal:
