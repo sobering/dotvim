@@ -7,7 +7,16 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
+
+Plugin 'godlygeek/tabular'
 Plugin 'kien/ctrlp.vim'
+
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'vim-scripts/JavaScript-Indent'
+Plugin 'elzr/vim-json'
+Plugin 'mxw/vim-jsx'
+
+Plugin 'groenewege/vim-less'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -167,10 +176,3 @@ function! HasPaste()
     en
     return ''
 endfunction
-
-" GUI settings
-if has("gui_macvim")
-  set noantialias
-  set guifont=TerminusTTF:h16
-  set t_Co=256
-endif
