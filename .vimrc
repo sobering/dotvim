@@ -1,15 +1,33 @@
-" If you don't understand a setting in here, just type ':h setting'.
-" Uses pathogen as a git submodule
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-execute pathogen#infect()
+set nocompatible
+filetype off
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+
+Plugin 'godlygeek/tabular'
+Plugin 'kien/ctrlp.vim'
+
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'vim-scripts/JavaScript-Indent'
+Plugin 'elzr/vim-json'
+Plugin 'mxw/vim-jsx'
+
+Plugin 'groenewege/vim-less'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+" Enable file type detection and do language-dependent indenting.
+filetype plugin indent on
 
 " Fixes issue with Vim Ruby. This is most likely caused by my use of Fish
 " Shell
 let g:ruby_path = $ruby_bin
-
-" Use Vim settings, rather than Vi settings (much better!).
-" This must be first, because it changes other options as a side effect.
-set nocompatible
 
 " Make backspace behave in a sane manner.
 set backspace=indent,eol,start
@@ -17,9 +35,6 @@ set whichwrap+=<,>,h,l
 
 " Switch syntax highlighting on
 syntax on
-
-" Enable file type detection and do language-dependent indenting.
-filetype plugin indent on
 
 let mapleader=","
 let g:mapleader=","
@@ -161,10 +176,3 @@ function! HasPaste()
     en
     return ''
 endfunction
-
-" GUI settings
-if has("gui_macvim")
-  set noantialias
-  set guifont=TerminusTTF:h16
-  set t_Co=256
-endif
