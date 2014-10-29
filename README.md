@@ -12,12 +12,12 @@ This is my repo for my Vim config. There are many like it, but this one is mine.
 		
 3. Initialize and update the Vundle submodule:
 
- 		cd ~/.vim
+		cd ~/.vim
 		git submodule init
 		git submodule update
 
 4. Install your plugins:
 
-    vim +BundleInstall! +BundleClean +qall
-  		
+		vim +BundleInstall! +BundleClean +qall
+
 5. Be cool :metal:
