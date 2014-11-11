@@ -25,10 +25,6 @@ filetype plugin indent on    " required
 " Enable file type detection and do language-dependent indenting.
 filetype plugin indent on
 
-" Fixes issue with Vim Ruby. This is most likely caused by my use of Fish
-" Shell
-let g:ruby_path = $ruby_bin
-
 " Make backspace behave in a sane manner.
 set backspace=indent,eol,start
 set whichwrap+=<,>,h,l
