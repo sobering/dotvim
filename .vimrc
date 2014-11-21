@@ -8,15 +8,17 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
-Plugin 'godlygeek/tabular'
-Plugin 'kien/ctrlp.vim'
-
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'vim-scripts/JavaScript-Indent'
+Plugin 'bling/vim-airline'
 Plugin 'elzr/vim-json'
+Plugin 'godlygeek/tabular'
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'kien/ctrlp.vim'
 Plugin 'mxw/vim-jsx'
-
-Plugin 'groenewege/vim-less'
+Plugin 'rstacruz/sparkup'
+Plugin 'scrooloose/syntastic'
+Plugin 'sjl/gundo.vim'
+Plugin 'tpope/vim-surround'
+Plugin 'vim-scripts/JavaScript-Indent'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
