@@ -8,6 +8,7 @@ call vundle#begin()
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
 
+Plugin 'airblade/vim-gitgutter'
 Plugin 'bling/vim-airline'
 Plugin 'elzr/vim-json'
 Plugin 'godlygeek/tabular'
@@ -17,6 +18,7 @@ Plugin 'mxw/vim-jsx'
 Plugin 'rstacruz/sparkup'
 Plugin 'scrooloose/syntastic'
 Plugin 'sjl/gundo.vim'
+Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 Plugin 'vim-scripts/JavaScript-Indent'
 
@@ -149,9 +151,6 @@ nnoremap <Right> :echoe "Use l"<CR>
 nnoremap <Up> :echoe "Use k"<CR>
 nnoremap <Down> :echoe "Use j"<CR>
 
-" Always show the status line
-set laststatus=2
-
 " Pressing ,ss will toggle and untoggle spell checking
 map <leader>ss :setlocal spell! spelllang=en_ca<cr>
 
@@ -164,6 +163,9 @@ map <leader>pp :setlocal paste!<cr>
 " Format the status line
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
 
+" Always show the status line
+set laststatus=2
+
 " Ignore certain files in tab-completion
 set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules
 
@@ -174,3 +176,22 @@ function! HasPaste()
     en
     return ''
 endfunction
+
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+
+highlight SignColumn ctermbg=black
+highlight GitGutterAdd ctermfg=green
+highlight GitGutterChange ctermfg=yellow
+highlight GitGutterDelete ctermfg=red
+highlight GitGutterChangeDelete ctermfg=yellow
+highlight GitGutterAdd ctermbg=black
+highlight GitGutterChange ctermbg=black
+highlight GitGutterDelete ctermbg=black
+highlight GitGutterChangeDelete ctermbg=black
+
+" Filetype specific stuff
+autocmd FileType php setlocal shiftwidth=4 tabstop=4
+
+set shell=/bin/bash
+
