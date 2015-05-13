@@ -1,3 +1,6 @@
+" I use the fish shell, so this is necessary
+set shell=/bin/bash
+
 set nocompatible
 filetype off
 
@@ -9,22 +12,26 @@ call vundle#begin()
 Plugin 'gmarik/Vundle.vim'
 
 Plugin 'airblade/vim-gitgutter'
+Plugin 'alvan/vim-closetag'
+Plugin 'ap/vim-css-color'
 Plugin 'bling/vim-airline'
+Plugin 'danro/rename.vim'
 Plugin 'elzr/vim-json'
 Plugin 'godlygeek/tabular'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'kien/ctrlp.vim'
 Plugin 'mxw/vim-jsx'
 Plugin 'rstacruz/sparkup'
+Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
+Plugin 'shawncplus/phpcomplete.vim'
 Plugin 'sjl/gundo.vim'
+Plugin 'StanAngeloff/php.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
-Plugin 'vim-scripts/JavaScript-Indent'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
-filetype plugin indent on    " required
 
 " Enable file type detection and do language-dependent indenting.
 filetype plugin indent on
@@ -35,6 +42,10 @@ set whichwrap+=<,>,h,l
 
 " Switch syntax highlighting on
 syntax on
+
+if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
+    set t_Co=256
+endif
 
 let mapleader=","
 let g:mapleader=","
@@ -110,8 +121,8 @@ set noswapfile
 " Sane tab settings
 set expandtab
 set smarttab
-set shiftwidth=2
-set tabstop=2
+set shiftwidth=4
+set tabstop=4
 
 " Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
 map <space> /
@@ -190,8 +201,20 @@ highlight GitGutterChange ctermbg=black
 highlight GitGutterDelete ctermbg=black
 highlight GitGutterChangeDelete ctermbg=black
 
-" Filetype specific stuff
-autocmd FileType php setlocal shiftwidth=4 tabstop=4
+" Open NERDTree with Ctrl+n
+map <C-n> :NERDTreeToggle<CR>
 
-set shell=/bin/bash
+" If no files are specified when vim opens, show NERDTree
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
+" Close vim if NERDTree is the only window
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+" Navigate long lines in a sane manner
+nmap j gj
+nmap k gk
+
+" CtrlP
+nmap ; :CtrlPBuffer<CR>
+:let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py'
