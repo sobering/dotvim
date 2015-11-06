@@ -1,132 +1,139 @@
-" I use the fish shell, so this is necessary
-set shell=/bin/bash
+"        __      __        _
+"   ____/ /___  / /__   __(_)___ ___
+"  / __  / __ \/ __/ | / / / __ `__ \
+" / /_/ / /_/ / /_ | |/ / / / / / / /
+" \__,_/\____/\__/ |___/_/_/ /_/ /_/
+"
+" This is my Vim configuration. There are
+" many like it, but this one is mine.
+
+if &shell =~# 'fish$'
+    set shell=sh
+endif
 
 set nocompatible
 filetype off
 
-" set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
 
 Plugin 'airblade/vim-gitgutter'
-Plugin 'alvan/vim-closetag'
-Plugin 'ap/vim-css-color'
+Plugin 'amirh/HTML-AutoCloseTag'
 Plugin 'bling/vim-airline'
-Plugin 'danro/rename.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'editorconfig/editorconfig-vim'
 Plugin 'elzr/vim-json'
-Plugin 'godlygeek/tabular'
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'kien/ctrlp.vim'
+Plugin 'fatih/vim-go'
+Plugin 'gorodinskiy/vim-coloresque'
+Plugin 'hail2u/vim-css3-syntax'
+Plugin 'honza/vim-snippets'
+Plugin 'jeffkreeftmeijer/vim-numbertoggle'
+Plugin 'jiangmiao/auto-pairs'
 Plugin 'mxw/vim-jsx'
-Plugin 'rstacruz/sparkup'
+Plugin 'pangloss/vim-javascript'
 Plugin 'scrooloose/nerdtree'
 Plugin 'scrooloose/syntastic'
-Plugin 'shawncplus/phpcomplete.vim'
-Plugin 'sjl/gundo.vim'
-Plugin 'StanAngeloff/php.vim'
+Plugin 'Shougo/neocomplete.vim.git'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-haml'
+Plugin 'tpope/vim-markdown'
+Plugin 'tpope/vim-repeat'
 Plugin 'tpope/vim-surround'
+Plugin 'whatyouhide/vim-gotham'
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-
-" Enable file type detection and do language-dependent indenting.
-filetype plugin indent on
-
-" Make backspace behave in a sane manner.
-set backspace=indent,eol,start
-set whichwrap+=<,>,h,l
-
-" Switch syntax highlighting on
-syntax on
-
-if $TERM == "xterm-256color" || $TERM == "screen-256color" || $COLORTERM == "gnome-terminal"
-    set t_Co=256
+if executable('ctags')
+    Plugin 'majutsushi/tagbar'
 endif
 
-let mapleader=","
-let g:mapleader=","
+call vundle#end()
 
-" Faster saving
-nmap <leader>w :w!<cr>
-
-" :W sudo saves the file
-command W w !sudo tee % > /dev/null
-
-" Treat <li> and <p> tags like the block tags they are
-let g:html_indent_tags = 'li\|p'
-
-" Set to auto read when a file is changed from the outside
-set autoread
-
-" I like line numbers
-set number
-
-" Always show current position
-set ruler
-
-" Command bar height
-set cmdheight=2
-
-" Hide buffer when it becomes abandoned
-set hid
-
-" Ignore case when searching
-set ignorecase
-
-" Be smart about cases
-set smartcase
-
-" Highlight search results
-set hlsearch
-
-" Disable highlight when <leader><cr> is pressed
-map <silent> <leader><cr> :noh<cr>
-
-" Makes search act like search in modern browsers
-set incsearch 
-
-" Don't redraw while executing macros (good performance config)
-set lazyredraw 
-
-" For regular expressions turn magic on
-set magic
-
-" Show matching brackets when text indicator is over them
-set showmatch 
-
-" How many tenths of a second to blink when matching brackets
-set mat=2
-
-" No annoying sound on errors
-set noerrorbells
-set novisualbell
+" General
+"""""""""
+filetype plugin indent on
+scriptencoding utf-8
+set mouse=a
+set mousehide
 set t_vb=
-set tm=500
-
-" Add a bit extra margin to the left
-set foldcolumn=1
-
-set background=dark
-colorscheme desert
-
-" Turn backup off, since most stuff is in SVN, git et.c anyway...
+set nospell
+set timeoutlen=1000 ttimeoutlen=0
 set nobackup
 set nowb
 set noswapfile
 
-" Sane tab settings
-set expandtab
-set smarttab
-set shiftwidth=4
-set tabstop=4
+set visualbell t_vb=    " turn off error beep/flash
+set novisualbell        " turn off visual bell
 
-" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-map <space> /
-map <c-space> ?
+" let g:go_fmt_command = "goimports"
+autocmd CompleteDone * pclose
+
+" Instead of reverting the cursor to the last position in the buffer, we
+" set it to the first line when editing a git commit message
+au FileType gitcommit au! BufEnter COMMIT_EDITMSG call setpos('.', [0, 1, 1, 0])"
+
+" Return to last edit position when opening files (You want this!)
+" autocmd BufReadPost *
+            \ if line("'\"") > -2 && line("'\"") <= line("$") |
+            \   exe "normal! g`\"" |
+            \ endif
+
+" UI
+""""
+syntax on
+set background=dark
+colorscheme gotham
+set number
+set showmode
+highlight clear SignColumn
+highlight clear LineNr
+set laststatus=2
+
+set statusline=%<%f\                     " Filename
+set statusline+=%w%h%m%r                 " Options
+set statusline+=%{fugitive#statusline()} " Git Hotness
+set statusline+=\ [%{&ff}/%Y]            " Filetype
+set statusline+=\ [%{getcwd()}]          " Current dir
+set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
+
+set backspace=indent,eol,start  " Backspace for dummies
+set linespace=0                 " No extra spaces between rows
+set number                      " Line numbers on
+set showmatch                   " Show matching brackets/parenthesis
+set incsearch                   " Find as you type search
+set hlsearch                    " Highlight search terms
+set winminheight=0              " Windows can be 0 line high
+set ignorecase                  " Case insensitive search
+set smartcase                   " Case sensitive when uc present
+set wildmenu                    " Show list instead of just completing
+set wildmode=list:longest,full  " Command <Tab> completion, list matches, then longest common part, then all.
+set whichwrap=b,s,h,l,<,>,[,]   " Backspace and cursor keys wrap too
+set scrolljump=5                " Lines to scroll when cursor leaves screen
+set scrolloff=3                 " Minimum lines to keep above and below cursor
+set foldenable                  " Auto fold code
+set list
+set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
+
+" Formatting
+""""""""""""
+set nowrap                      " Do not wrap long lines
+set autoindent                  " Indent at the same level of the previous line
+set shiftwidth=4                " Use indents of 4 spaces
+set expandtab                   " Tabs are spaces, not tabs
+set tabstop=4                   " An indentation every four columns
+set softtabstop=4               " Let backspace delete indent
+set nojoinspaces                " Prevents inserting two spaces after punctuation on a join (J)
+set splitright                  " Puts new vsplit windows to the right of the current
+set splitbelow                  " Puts new split windows to the bottom of the current
+
+" Key (re)mappings
+""""""""""""""""""
+let mapleader=","
+let g:mapleader=","
+nmap <leader>w :w!<cr>
+
+noremap j gj
+noremap k gk
 
 " Smart way to move between windows
 map <C-j> <C-W>j
@@ -134,27 +141,7 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-" Close the current buffer
-map <leader>bd :Bclose<cr>
-
-" Close all the buffers
-map <leader>ba :1,1000 bd!<cr>
-
-" Useful mappings for managing tabs
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove 
-map <leader>t<leader> :tabnext 
-
-" Return to last edit position when opening files (You want this!)
-autocmd BufReadPost *
-     \ if line("'\"") > 0 && line("'\"") <= line("$") |
-     \   exe "normal! g`\"" |
-     \ endif
-
-" Remember info about open buffers on close
-set viminfo^=%
+map <leader>pp :setlocal paste!<cr>
 
 " Get off my lawn!
 nnoremap <Left> :echoe "Use h"<CR>
@@ -162,59 +149,135 @@ nnoremap <Right> :echoe "Use l"<CR>
 nnoremap <Up> :echoe "Use k"<CR>
 nnoremap <Down> :echoe "Use j"<CR>
 
-" Pressing ,ss will toggle and untoggle spell checking
-map <leader>ss :setlocal spell! spelllang=en_ca<cr>
+" Plugins
+"""""""""
+" Airline {
+    let g:airline#extensions#tabline#enabled = 1
+    let g:airline_powerline_fonts = 1
+" }
 
-" Remove the Windows ^M - when the encodings gets messed up
-noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
+" CtrlP {
+    let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py'
+" }
 
-" Toggle paste mode on and off
-map <leader>pp :setlocal paste!<cr>
+" NERDTree {
+    map <F3> <plug>NERDTreeToggle<CR>
+    map <leader>e :NERDTreeFind<CR>
+    nmap <leader>nt :NERDTreeFind<CR>
 
-" Format the status line
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l
+    let NERDTreeShowBookmarks=1
+    let NERDTreeIgnore=['\.py[cd]$', '\~$', '\.swo$', '\.swp$', '^\.git$', '^\.hg$', '^\.svn$', '\.bzr$']
+    let NERDTreeChDirMode=0
+    let NERDTreeQuitOnOpen=1
+    let NERDTreeMouseMode=2
+    let NERDTreeShowHidden=1
+    let NERDTreeKeepTreeInNewTab=1
+" }
 
-" Always show the status line
-set laststatus=2
+" AutoCloseTag {
+    au FileType xhtml,xml ru ftplugin/html/autoclosetag.vim
+    nmap <Leader>ac <Plug>ToggleAutoCloseMappings
+" }
 
-" Ignore certain files in tab-completion
-set wildignore=*.class,*.o,*~,*.pyc,.git,node_modules
+" NumberToggle {
+    let g:NumberToggleTrigger="<F2>"
+" }
 
-" Returns true if paste mode is enabled
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    en
-    return ''
-endfunction
+" omnicomplete {
+    set completeopt=menu,longest
+" }
 
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
+" neocomplete {
+    let g:acp_enableAtStartup = 0
+    let g:neocomplete#enable_at_startup = 1
+    let g:neocomplete#enable_smart_case = 1
+    let g:neocomplete#enable_auto_delimiter = 1
+    let g:neocomplete#max_list = 15
+    let g:neocomplete#force_overwrite_completefunc = 1
 
-highlight SignColumn ctermbg=black
-highlight GitGutterAdd ctermfg=green
-highlight GitGutterChange ctermfg=yellow
-highlight GitGutterDelete ctermfg=red
-highlight GitGutterChangeDelete ctermfg=yellow
-highlight GitGutterAdd ctermbg=black
-highlight GitGutterChange ctermbg=black
-highlight GitGutterDelete ctermbg=black
-highlight GitGutterChangeDelete ctermbg=black
+    " Define dictionary.
+    let g:neocomplete#sources#dictionary#dictionaries = {
+                \ 'default' : '',
+                \ 'vimshell' : $HOME.'/.vimshell_hist',
+                \ 'scheme' : $HOME.'/.gosh_completions'
+                \ }
 
-" Open NERDTree with Ctrl+n
-map <C-n> :NERDTreeToggle<CR>
+    " Define keyword.
+    if !exists('g:neocomplete#keyword_patterns')
+        let g:neocomplete#keyword_patterns = {}
+    endif
 
-" If no files are specified when vim opens, show NERDTree
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+    let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
-" Close vim if NERDTree is the only window
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+    " <C-k> Complete Snippet
+    " <C-k> Jump to next snippet point
+    imap <silent><expr><C-k> neosnippet#expandable() ?
+                \ "\<Plug>(neosnippet_expand_or_jump)" : (pumvisible() ?
+                \ "\<C-e>" : "\<Plug>(neosnippet_expand_or_jump)")
+    smap <TAB> <Right><Plug>(neosnippet_jump_or_expand)
 
-" Navigate long lines in a sane manner
-nmap j gj
-nmap k gk
+    inoremap <expr><C-g> neocomplete#undo_completion()
+    inoremap <expr><C-l> neocomplete#complete_common_string()
+    "inoremap <expr><CR> neocomplete#complete_common_string()
 
-" CtrlP
-nmap ; :CtrlPBuffer<CR>
-:let g:ctrlp_custom_ignore = '\v\~$|\.(o|swp|pyc|wav|mp3|ogg|blend)$|(^|[/\\])\.(hg|git|bzr)($|[/\\])|__init__\.py'
+    " <CR>: close popup
+    " <s-CR>: close popup and save indent.
+    inoremap <expr><s-CR> pumvisible() ? neocomplete#smart_close_popup()."\<CR>" : "\<CR>"
+
+    function! CleverCr()
+        if pumvisible()
+            if neosnippet#expandable()
+                let exp = "\<Plug>(neosnippet_expand)"
+                return exp . neocomplete#smart_close_popup()
+            else
+                return neocomplete#smart_close_popup()
+            endif
+        else
+            return "\<CR>"
+        endif
+    endfunction
+
+    " <CR> close popup and save indent or expand snippet
+    imap <expr> <CR> CleverCr()
+    " <C-h>, <BS>: close popup and delete backword char.
+    inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+    inoremap <expr><C-y> neocomplete#smart_close_popup()
+
+    " <TAB>: completion.
+    inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
+    inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<TAB>"
+
+    " Courtesy of Matteo Cavalleri
+    function! CleverTab()
+        if pumvisible()
+            return "\<C-n>"
+        endif
+        let substr = strpart(getline('.'), 0, col('.') - 1)
+        let substr = matchstr(substr, '[^ \t]*$')
+        if strlen(substr) == 0
+            " nothing to match on empty string
+            return "\<Tab>"
+        else
+            " existing text matching
+            if neosnippet#expandable_or_jumpable()
+                return "\<Plug>(neosnippet_expand_or_jump)"
+            else
+                return neocomplete#start_manual_complete()
+            endif
+        endif
+    endfunction
+
+    imap <expr> <Tab> CleverTab()
+
+    " Enable omni completion.
+    autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+    autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+    autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+    autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+    autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+    " Enable heavy omni completion.
+    if !exists('g:neocomplete#sources#omni#input_patterns')
+        let g:neocomplete#sources#omni#input_patterns = {}
+    endif
+" }
