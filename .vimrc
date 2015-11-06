@@ -161,7 +161,9 @@ nnoremap <Down> :echoe "Use j"<CR>
 " }
 
 " NERDTree {
-    map <F3> <plug>NERDTreeToggle<CR>
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+
+    map <C-e> :NERDTreeToggle<CR>
     map <leader>e :NERDTreeFind<CR>
     nmap <leader>nt :NERDTreeFind<CR>
 
